@@ -7,10 +7,12 @@ void main() => runApp(MyApp());
 class MyApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
-    return MaterialApp(
-      title: 'Alley',
-      debugShowCheckedModeBanner: false,
-      home: Login(),
+    return new MaterialApp(
+        title: 'Freshman',
+        debugShowCheckedModeBanner: false,
+        
+        home: Login()
     );
   }
 }
+      

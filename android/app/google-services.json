@@ -1,0 +1,40 @@
+{
+  "project_info": {
+    "project_number": "125638970139",
+    "firebase_url": "https://freshman2-cc163.firebaseio.com",
+    "project_id": "freshman2-cc163",
+    "storage_bucket": "freshman2-cc163.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:125638970139:android:24778da724caef4492a1be",
+        "android_client_info": {
+          "package_name": "com.example.freshman"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "125638970139-16hpjh85rnvfvm0dguvac56q20b6obn6.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyDWMN_GbChK8XgVyxbNsY_HPxpKnsVTgjw"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "125638970139-16hpjh85rnvfvm0dguvac56q20b6obn6.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

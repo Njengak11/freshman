@@ -1,6 +1,9 @@
+import 'dart:ffi';
+
 import 'package:flutter/material.dart';
 import 'package:freshman/homepage.dart';
 import 'package:google_fonts/google_fonts.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 
 class Login extends StatefulWidget {
   @override
@@ -8,121 +11,69 @@ class Login extends StatefulWidget {
 }
 
 class _LoginState extends State<Login> {
+  String _email,_password;
+  final GlobalKey<FormState>__formKey = GlobalKey<FormState>();
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      resizeToAvoidBottomPadding: false,
-      body: Column(
-        crossAxisAlignment:CrossAxisAlignment.start,
-        children:<Widget>[
-          Container(
-            child:Stack(children: <Widget>[
-              Container(
-                padding:EdgeInsets.fromLTRB(20.0, 110.0, .0, 50.0),
-                child: Text('Hello',
-                style:GoogleFonts.oswald(
-                  fontSize: 80.0,
-                  fontWeight: FontWeight.w300,
-                )
-                ),
-              ),
-              SizedBox(height:0.0),
-              Container(
-                padding:EdgeInsets.fromLTRB(20.0, 220.0, 0.0, 0.0),
-                child: Text('There',
-                style:GoogleFonts.dancingScript(
-                  fontSize: 120.0,
-                  fontWeight: FontWeight.bold,
-                  color: Colors.lightBlue
-                )
-                ),
-              ),
-               
-            ],
-            )
-          ),
-          Container(
-            padding:EdgeInsets.only(top:35.0,left:20.0,right:20.0),
-            child:Column(children: <Widget>[
-              TextFormField(
-        decoration: InputDecoration(
-          icon:Icon(Icons.person_outline,
+      backgroundColor: Colors.white,
+      appBar: AppBar(
+        backgroundColor: Colors.white,
+        title:Text('Sign In',
+        style:GoogleFonts.oswald(
           color: Colors.lightBlue
-          ),
-          labelText: "Full Names",
-          labelStyle: GoogleFonts.oswald(
-            color: Colors.lightBlue 
-          ),
-          fillColor: Colors.lightBlue,
-          focusedBorder:OutlineInputBorder(
-            borderSide: const BorderSide(color: Colors.lightBlue, width: 2.0),
-            borderRadius: BorderRadius.circular(25.0),
-          ),
-        ),
-      )
-            ],)
-          ),
-           Container(
-            padding:EdgeInsets.only(top:35.0,left:20.0,right:20.0),
-            child:Column(children: <Widget>[
-              TextFormField(
-        decoration: InputDecoration(
-          icon:Icon(Icons.mail_outline,
-          color: Colors.lightBlue
-          ),
-          labelText: "Email",
-          labelStyle: GoogleFonts.oswald(
-            color: Colors.lightBlue 
-          ),
-          fillColor: Colors.lightBlue,
-          focusedBorder:OutlineInputBorder(
-            borderSide: const BorderSide(color: Colors.lightBlue, width: 2.0),
-            borderRadius: BorderRadius.circular(25.0),
-          ),
-        ),
-      )
-            ],)
-          ),
-          SizedBox(height:10.0),
-          Container(
-            alignment:Alignment(1.0,0.0),
-            padding:EdgeInsets.fromLTRB(30.0, 15.0, 20.0, 0.0),
-            child:InkWell(
-              child: Text('Forgot Password',
-              style:GoogleFonts.oswald(
-                color:Colors.lightBlue,
-                fontWeight: FontWeight.bold,
-                decoration: TextDecoration.underline
-                              )
-              ),
-            )
-          ),
-          SizedBox(height:30.0),
-          Center(
-            child:ButtonTheme( 
-              minWidth:110.0,
-              height:50.0,
-              child:RaisedButton(
-                shape:RoundedRectangleBorder(
-                  borderRadius:BorderRadius.circular(50.0),
-                ),
-                color:Colors.lightBlue,
-                onPressed: (){
-                 Navigator.push(context, 
-                MaterialPageRoute(builder: (context)
-                    => HomePage(),
-                 ),
-                   );
-                },
-                child: Text('Login',
-                style:GoogleFonts.oswald(
-                  color:Colors.white
-                )),
-              ),
-            )
-          ) 
-        ]
+        )),
+        elevation: 0.0,
+        centerTitle: true,
       ),
+      body: Form(
+        key:__formKey,
+        child: Column(
+          children:<Widget>[
+            TextFormField(
+              validator:(input){
+                if(input.isEmpty){
+                  return 'Please type an email';
+                }
+              },
+              onSaved: (input) => _email = input,
+              decoration: InputDecoration(
+                labelText:'Email'
+              ),
+            ),
+            SizedBox(height:20.0),
+            TextFormField(
+              validator:(input){
+                if(input.isEmpty){
+                  return 'Please provide a password';
+                }
+              },
+              onSaved: (input) => _password = input,
+              decoration: InputDecoration(
+                labelText:'Password'
+              ),
+              obscureText: true,
+            ),
+            RaisedButton(onPressed: signIn,
+            child:Text('Sign In')
+            ),
+          ]
+        )
+        ),
     );
+  }
+
+  Future<Void> signIn() async{ 
+    final _formState = __formKey.currentState;
+    if(_formState.validate()){
+      _formState.save();
+      try{
+        FirebaseUser user = (await FirebaseAuth.instance.signInWithEmailAndPassword(email: _email, password: _password)) as FirebaseUser;
+        Navigator.push(context, MaterialPageRoute(builder: (context) => HomePage(user: user,)));
+      }catch(e){
+        print(e.message);
+      }
+     
+    }
   }
 }
